@@ -1,241 +1,331 @@
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<title>Gallery | Chef Nat’s Culinary Services</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-	<link rel="stylesheet" href="assets/css/main.css" />
-	<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-</head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="description" content="Gallery — Chef Nat's Culinary Services. Private chef dining, catering events, pastry & cakes and street food photography from real experiences." />
+  <title>Gallery | Chef Nat's Culinary Services</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 
+  <style>
+    /* Lightbox overlay */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 1em;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    #lightbox-caption {
+      color: #fff;
+      margin-top: 1em;
+      font-size: 0.95em;
+      opacity: 0.8;
+      text-align: center;
+    }
+    #lightbox-close {
+      position: absolute;
+      top: 1.2em;
+      right: 1.5em;
+      color: #fff;
+      font-size: 2em;
+      cursor: pointer;
+      line-height: 1;
+      background: none;
+      border: none;
+      opacity: 0.7;
+    }
+    #lightbox-close:hover { opacity: 1; }
+    #lightbox-prev, #lightbox-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      font-size: 2em;
+      padding: 0.3em 0.6em;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    #lightbox-prev { left: 1em; }
+    #lightbox-next { right: 1em; }
+    #lightbox-prev:hover, #lightbox-next:hover { background: rgba(255,255,255,0.2); }
+
+    /* Gallery grid */
+    .gallery-section { margin-bottom: 3em; }
+    .gallery-section h3 { margin-bottom: 1em; }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1em;
+    }
+    .photo-grid figure {
+      margin: 0;
+      cursor: pointer;
+      overflow: hidden;
+      border-radius: 4px;
+      position: relative;
+    }
+    .photo-grid figure img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+    .photo-grid figure:hover img {
+      transform: scale(1.04);
+      filter: brightness(0.85);
+    }
+    .photo-grid figcaption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.7));
+      color: #fff;
+      padding: 0.8em 0.8em 0.6em;
+      font-size: 0.8em;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .photo-grid figure:hover figcaption { opacity: 1; }
+  </style>
+</head>
 <body class="is-preload">
 
-<div id="wrapper">
+  <!-- Lightbox -->
+  <div id="lightbox" role="dialog" aria-label="Image viewer">
+    <button id="lightbox-close" aria-label="Close">&times;</button>
+    <button id="lightbox-prev" aria-label="Previous">&#8249;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <p id="lightbox-caption"></p>
+    <button id="lightbox-next" aria-label="Next">&#8250;</button>
+  </div>
 
-	<!-- HEADER -->
-	<header id="header">
-		<a href="index.html" class="logo">
-			<strong>Chef Nat</strong> <span>Gallery</span>
-		</a>
+  <!-- Header -->
+  <header id="header">
+    <a href="index.html" class="logo"><strong>Chef Nat</strong> Gallery</a>
+    <nav><a href="#menu">Menu</a></nav>
+  </header>
 
-		<nav>
-			<a href="#menu">Menu</a>
-		</nav>
-	</header>
+  <!-- Menu -->
+  <nav id="menu">
+    <ul class="links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="private-chef.html">Private Chef</a></li>
+      <li><a href="catering.html">Catering</a></li>
+      <li><a href="baking.html">Pastry &amp; Cakes</a></li>
+      <li><a href="bite-joint.html">The Bite Joint</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="recipes.html">Recipes</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <ul class="actions stacked">
+      <li><a href="https://wa.me/27727416782" class="button primary fit">Book Chef Nat</a></li>
+    </ul>
+  </nav>
 
-	<!-- MENU -->
-	<nav id="menu">
-		<ul class="links">
-			<li><a href="index.html">Home</a></li>
-			<li><a href="private-chef.html">Private Chef</a></li>
-			<li><a href="catering.html">Catering</a></li>
-			<li><a href="baking.html">Baking</a></li>
-			<li><a href="bite-joint.html">The Bite Joint</a></li>
-			<li><a href="gallery.html">Gallery</a></li>
-			<li><a href="about.html">About</a></li>
-			<li><a href="whats-cooking.html">What’s Cooking</a></li>
-			<li><a href="contact.html">Contact</a></li>
-		</ul>
+  <!-- Banner -->
+  <section id="banner" class="major">
+    <div class="inner">
+      <header class="major">
+        <h1>Gallery</h1>
+      </header>
+      <div class="content">
+        <p>A visual collection of private chef experiences,<br />
+        catering events, pastry &amp; cakes and street food from The Bite Joint.</p>
+        <ul class="actions">
+          <li><a href="https://wa.me/27727416782" class="button next">Book Experience</a></li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-		<ul class="actions stacked">
-			<li>
-				<a href="https://wa.me/27727416782" class="button primary fit">
-					Book Chef Nat
-				</a>
-			</li>
-		</ul>
-	</nav>
+  <!-- Main -->
+  <div id="main">
+    <section id="one">
+      <div class="inner">
+        <header class="major">
+          <h2>Work That Speaks For Itself</h2>
+        </header>
+        <p>Every plate, event, and creation shown here represents real experiences
+        delivered by Chef Nat's Culinary Services. Click any image to view it full size.</p>
 
-	<!-- HERO -->
-	<section id="banner" class="major">
-		<div class="inner">
-			<header class="major">
-				<h1>Gallery</h1>
-			</header>
+        <!-- PRIVATE CHEF -->
+        <div class="gallery-section">
+          <h3>Private Chef</h3>
+          <div class="photo-grid" data-group="private-chef">
+            <figure data-src="images/gallery/pc1.jpg" data-caption="Private Chef — Luxury dining experience">
+              <img src="images/gallery/pc1.jpg" alt="Private Chef dining experience" loading="lazy" />
+              <figcaption>Luxury dining experience</figcaption>
+            </figure>
+            <figure data-src="images/gallery/pc2.jpg" data-caption="Private Chef — In-home fine dining setup">
+              <img src="images/gallery/pc2.jpg" alt="In-home fine dining setup" loading="lazy" />
+              <figcaption>In-home fine dining setup</figcaption>
+            </figure>
+            <!-- Add more: copy a <figure> block, update src and caption -->
+          </div>
+        </div>
 
-			<div class="content">
-				<p>
-					A visual collection of private chef experiences,
-					catering events, baked creations and street food from The Bite Joint.
-				</p>
+        <!-- CATERING -->
+        <div class="gallery-section">
+          <h3>Catering Events</h3>
+          <div class="photo-grid" data-group="catering">
+            <figure data-src="images/gallery/cat1.jpg" data-caption="Catering — Weddings &amp; corporate functions">
+              <img src="images/gallery/cat1.jpg" alt="Catering event" loading="lazy" />
+              <figcaption>Weddings &amp; corporate functions</figcaption>
+            </figure>
+            <figure data-src="images/gallery/cat2.jpg" data-caption="Catering — Buffet &amp; plated service styling">
+              <img src="images/gallery/cat2.jpg" alt="Event setup" loading="lazy" />
+              <figcaption>Buffet &amp; plated service styling</figcaption>
+            </figure>
+            <!-- Add more catering images here -->
+          </div>
+        </div>
 
-				<ul class="actions">
-					<li>
-						<a href="https://wa.me/27727416782" class="button primary">
-							Book Experience
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</section>
+        <!-- PASTRY & CAKES -->
+        <div class="gallery-section">
+          <h3>Pastry &amp; Cakes</h3>
+          <div class="photo-grid" data-group="pastry">
+            <figure data-src="images/gallery/bake1.jpg" data-caption="Pastry &amp; Cakes — Custom celebration designs">
+              <img src="images/gallery/bake1.jpg" alt="Custom celebration cakes" loading="lazy" />
+              <figcaption>Custom celebration designs</figcaption>
+            </figure>
+            <figure data-src="images/gallery/bake2.jpg" data-caption="Pastry &amp; Cakes — Handcrafted desserts">
+              <img src="images/gallery/bake2.jpg" alt="Handcrafted desserts" loading="lazy" />
+              <figcaption>Handcrafted sweet creations</figcaption>
+            </figure>
+            <!-- Add more pastry images here -->
+          </div>
+        </div>
 
-	<!-- INTRO -->
-	<section>
-		<div class="inner">
+        <!-- THE BITE JOINT -->
+        <div class="gallery-section">
+          <h3>The Bite Joint</h3>
+          <div class="photo-grid" data-group="bite-joint">
+            <figure data-src="images/gallery/bj1.jpg" data-caption="The Bite Joint — Street food energy">
+              <img src="images/gallery/bj1.jpg" alt="The Bite Joint street food" loading="lazy" />
+              <figcaption>Street food energy</figcaption>
+            </figure>
+            <figure data-src="images/gallery/bj2.jpg" data-caption="The Bite Joint — Burgers, kota &amp; wings">
+              <img src="images/gallery/bj2.jpg" alt="Loaded meals" loading="lazy" />
+              <figcaption>Burgers, kota &amp; wings</figcaption>
+            </figure>
+            <!-- Add more Bite Joint images here -->
+          </div>
+        </div>
 
-			<header class="major">
-				<h2>Work That Speaks For Itself</h2>
-			</header>
+      </div>
+    </section>
 
-			<p>
-				Every plate, event, and creation shown here represents real experiences
-				delivered by Chef Nat’s Culinary Services. This is where quality meets consistency.
-			</p>
+    <section id="two">
+      <div class="inner">
+        <header class="major"><h2>Want This Experience?</h2></header>
+        <p>Let's create something for your event, dinner or celebration.</p>
+        <ul class="actions">
+          <li><a href="https://wa.me/27727416782" class="button next">Book on WhatsApp</a></li>
+        </ul>
+      </div>
+    </section>
 
-		</div>
-	</section>
+  </div>
 
-	<!-- PRIVATE CHEF -->
-	<section class="tiles">
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="inner">
+      <ul class="icons">
+        <li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+        <li><a href="https://wa.me/27727416782" class="icon brands alt fa-whatsapp"><span class="label">WhatsApp</span></a></li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; Chef Nat's Culinary Services</li>
+        <li>Gallery</li>
+      </ul>
+    </div>
+  </footer>
 
-		<article>
-			<span class="image">
-				<img src="images/pc1.jpg" alt="Private Chef 1" />
-			</span>
-			<header class="major">
-				<h3>Private Chef</h3>
-				<p>Luxury dining experiences</p>
-			</header>
-		</article>
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/jquery.scrollex.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
 
-		<article>
-			<span class="image">
-				<img src="images/pc2.jpg" alt="Private Chef 2" />
-			</span>
-			<header class="major">
-				<h3>Private Dining</h3>
-				<p>In-home fine dining setups</p>
-			</header>
-		</article>
+  <script>
+    // Gather all gallery figures for lightbox navigation
+    var allFigures = [];
+    var currentIndex = 0;
 
-	</section>
+    function buildFigureList() {
+      allFigures = [];
+      document.querySelectorAll('.photo-grid figure').forEach(function(fig) {
+        allFigures.push({
+          src: fig.getAttribute('data-src'),
+          caption: fig.getAttribute('data-caption') || ''
+        });
+      });
+    }
 
-	<!-- CATERING -->
-	<section class="tiles">
+    function openLightbox(index) {
+      currentIndex = index;
+      var item = allFigures[index];
+      document.getElementById('lightbox-img').src = item.src;
+      document.getElementById('lightbox-img').alt = item.caption;
+      document.getElementById('lightbox-caption').textContent = item.caption;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
 
-		<article>
-			<span class="image">
-				<img src="images/cat1.jpg" alt="Catering 1" />
-			</span>
-			<header class="major">
-				<h3>Catering Events</h3>
-				<p>Weddings & corporate functions</p>
-			</header>
-		</article>
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.getElementById('lightbox-img').src = '';
+      document.body.style.overflow = '';
+    }
 
-		<article>
-			<span class="image">
-				<img src="images/cat2.jpg" alt="Catering 2" />
-			</span>
-			<header class="major">
-				<h3>Event Setup</h3>
-				<p>Buffet & plated service styling</p>
-			</header>
-		</article>
+    function navigate(dir) {
+      currentIndex = (currentIndex + dir + allFigures.length) % allFigures.length;
+      openLightbox(currentIndex);
+    }
 
-	</section>
+    document.addEventListener('DOMContentLoaded', function() {
+      buildFigureList();
 
-	<!-- BAKING -->
-	<section class="tiles">
+      document.querySelectorAll('.photo-grid figure').forEach(function(fig, i) {
+        fig.addEventListener('click', function() { openLightbox(i); });
+      });
 
-		<article>
-			<span class="image">
-				<img src="images/bake1.jpg" alt="Cake 1" />
-			</span>
-			<header class="major">
-				<h3>Custom Cakes</h3>
-				<p>Celebration designs</p>
-			</header>
-		</article>
+      document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
+      document.getElementById('lightbox-prev').addEventListener('click', function() { navigate(-1); });
+      document.getElementById('lightbox-next').addEventListener('click', function() { navigate(1); });
 
-		<article>
-			<span class="image">
-				<img src="images/bake2.jpg" alt="Desserts" />
-			</span>
-			<header class="major">
-				<h3>Desserts</h3>
-				<p>Handcrafted sweet creations</p>
-			</header>
-		</article>
+      document.getElementById('lightbox').addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+      });
 
-	</section>
-
-	<!-- BITE JOINT -->
-	<section class="tiles">
-
-		<article>
-			<span class="image">
-				<img src="images/bj1.jpg" alt="Bite Joint 1" />
-			</span>
-			<header class="major">
-				<h3>The Bite Joint</h3>
-				<p>Street food energy</p>
-			</header>
-		</article>
-
-		<article>
-			<span class="image">
-				<img src="images/bj2.jpg" alt="Bite Joint 2" />
-			</span>
-			<header class="major">
-				<h3>Loaded Meals</h3>
-				<p>Burgers, kota & wings</p>
-			</header>
-		</article>
-
-	</section>
-
-	<!-- CTA -->
-	<section class="major">
-		<div class="inner">
-
-			<header class="major">
-				<h2>Want This Experience?</h2>
-			</header>
-
-			<p>
-				Let’s create something for your event, dinner or celebration.
-			</p>
-
-			<ul class="actions">
-				<li>
-					<a href="https://wa.me/27727416782" class="button primary">
-						Book on WhatsApp
-					</a>
-				</li>
-			</ul>
-
-		</div>
-	</section>
-
-	<!-- FOOTER -->
-	<footer id="footer">
-		<div class="inner">
-
-			<ul class="icons">
-				<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
-				<li><a href="https://wa.me/27727416782" class="icon brands alt fa-whatsapp"><span class="label">WhatsApp</span></a></li>
-			</ul>
-
-			<ul class="copyright">
-				<li>&copy; Chef Nat’s Culinary Services</li>
-				<li>Gallery</li>
-			</ul>
-
-		</div>
-	</footer>
-
-</div>
-
-<!-- SCRIPTS -->
-<script src="assets/js/jquery.min.js"></script>
-<script src="assets/js/jquery.scrolly.min.js"></script>
-<script src="assets/js/jquery.scrollex.min.js"></script>
-<script src="assets/js/browser.min.js"></script>
-<script src="assets/js/breakpoints.min.js"></script>
-<script src="assets/js/util.js"></script>
-<script src="assets/js/main.js"></script>
+      document.addEventListener('keydown', function(e) {
+        if (!document.getElementById('lightbox').classList.contains('open')) return;
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigate(-1);
+        if (e.key === 'ArrowRight') navigate(1);
+      });
+    });
+  </script>
 
 </body>
 </html>
