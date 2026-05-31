@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <meta name="description" content="Recipes from Chef Nat's kitchen. Real dishes, real technique — from quick weeknight meals to celebration bakes." />
+  <title>Recipes | Chef Nat's Culinary Services</title>
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+  <style>
+    /* Recipe blog styles — sits on top of the existing theme */
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2.5em;
+      margin: 2em 0;
+    }
+
+    .recipe-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .recipe-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .recipe-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .recipe-card-body {
+      padding: 1.5em;
+    }
+
+    .recipe-card-body .tag {
+      display: inline-block;
+      font-size: 0.7em;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(255,255,255,0.1);
+      padding: 0.3em 0.7em;
+      border-radius: 3px;
+      margin-bottom: 0.8em;
+    }
+
+    .recipe-card-body h3 {
+      margin: 0 0 0.5em;
+      font-size: 1.2em;
+    }
+
+    .recipe-card-body p {
+      font-size: 0.9em;
+      opacity: 0.8;
+      margin-bottom: 1em;
+    }
+
+    .recipe-meta {
+      display: flex;
+      gap: 1.5em;
+      font-size: 0.8em;
+      opacity: 0.6;
+      margin-bottom: 1.2em;
+    }
+
+    .recipe-meta span::before {
+      margin-right: 0.3em;
+    }
+
+    /* Full recipe article */
+    .recipe-article {
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .recipe-article .recipe-hero {
+      width: 100%;
+      max-height: 400px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 2em;
+    }
+
+    .recipe-article .recipe-stats {
+      display: flex;
+      gap: 2em;
+      flex-wrap: wrap;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 1.2em 1.5em;
+      margin: 1.5em 0 2em;
+    }
+
+    .recipe-article .stat {
+      text-align: center;
+    }
+
+    .recipe-article .stat-label {
+      font-size: 0.7em;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      opacity: 0.6;
+      display: block;
+    }
+
+    .recipe-article .stat-value {
+      font-size: 1.1em;
+      font-weight: bold;
+    }
+
+    .recipe-article .ingredients-list {
+      padding-left: 1.2em;
+    }
+
+    .recipe-article .ingredients-list li {
+      margin-bottom: 0.4em;
+    }
+
+    .recipe-article .steps-list {
+      counter-reset: step;
+      list-style: none;
+      padding: 0;
+    }
+
+    .recipe-article .steps-list li {
+      counter-increment: step;
+      display: flex;
+      gap: 1em;
+      margin-bottom: 1.2em;
+      align-items: flex-start;
+    }
+
+    .recipe-article .steps-list li::before {
+      content: counter(step);
+      min-width: 2em;
+      height: 2em;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.85em;
+      flex-shrink: 0;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5em;
+      opacity: 0.7;
+      font-size: 0.9em;
+      margin-bottom: 2em;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: inherit;
+      padding: 0;
+      text-decoration: none;
+    }
+
+    .back-link:hover { opacity: 1; }
+
+    /* Hide/show logic */
+    #recipe-list-view { display: block; }
+    #recipe-detail-view { display: none; }
+    #recipe-detail-view.active { display: block; }
+    #recipe-list-view.hidden { display: none; }
+  </style>
+</head>
+<body class="is-preload">
+
+  <!-- Header -->
+  <header id="header">
+    <a href="index.html" class="logo"><strong>Chef Nat</strong> Recipes</a>
+    <nav>
+      <a href="#menu">Menu</a>
+    </nav>
+  </header>
+
+  <!-- Menu -->
+  <nav id="menu">
+    <ul class="links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="private-chef.html">Private Chef</a></li>
+      <li><a href="catering.html">Catering</a></li>
+      <li><a href="baking.html">Pastry & Cakes</a></li>
+      <li><a href="bite-joint.html">The Bite Joint</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="recipes.html">Recipes</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <ul class="actions stacked">
+      <li><a href="https://wa.me/27727416782" class="button primary fit">Book Chef Nat</a></li>
+    </ul>
+  </nav>
+
+  <!-- Banner -->
+  <section id="banner" class="major">
+    <div class="inner">
+      <header class="major">
+        <h1>Recipes</h1>
+      </header>
+      <div class="content">
+        <p>Real dishes from Chef Nat's kitchen.<br />
+        From quick weeknight meals to celebration bakes.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main -->
+  <div id="main">
+    <section id="one">
+      <div class="inner">
+
+        <!-- LIST VIEW -->
+        <div id="recipe-list-view">
+          <header class="major">
+            <h2>From the Kitchen</h2>
+          </header>
+          <p>New recipes added regularly. Click any recipe to read the full method.</p>
+
+          <div class="recipe-grid">
+
+            <!-- RECIPE CARD 1 -->
+            <div class="recipe-card" onclick="showRecipe('r1')">
+              <img src="images/bake1.jpg" alt="Red Velvet Cake" />
+              <div class="recipe-card-body">
+                <span class="tag">Pastry & Cakes</span>
+                <h3>Classic Red Velvet Cake</h3>
+                <p>A rich, moist red velvet with cream cheese frosting — the go-to celebration cake.</p>
+                <div class="recipe-meta">
+                  <span>⏱ 1 hr 20 min</span>
+                  <span>🍽 10–12 servings</span>
+                </div>
+                <a class="button small" onclick="showRecipe('r1'); return false;">Read Recipe</a>
+              </div>
+            </div>
+
+            <!-- RECIPE CARD 2 -->
+            <div class="recipe-card" onclick="showRecipe('r2')">
+              <img src="images/bj1.jpg" alt="Loaded Kota" />
+              <div class="recipe-card-body">
+                <span class="tag">Street Food</span>
+                <h3>Loaded Kota</h3>
+                <p>A South African street food staple — loaded quarter loaf with all the works.</p>
+                <div class="recipe-meta">
+                  <span>⏱ 30 min</span>
+                  <span>🍽 1–2 servings</span>
+                </div>
+                <a class="button small" onclick="showRecipe('r2'); return false;">Read Recipe</a>
+              </div>
+            </div>
+
+            <!-- ADD MORE RECIPE CARDS HERE — copy the block above and update the id (r3, r4...) -->
+
+          </div>
+        </div>
+
+        <!-- DETAIL VIEW (hidden by default, shown when a recipe is clicked) -->
+        <div id="recipe-detail-view">
+
+          <a class="back-link" onclick="showList()">← Back to Recipes</a>
+
+          <!-- RECIPE R1: Red Velvet Cake -->
+          <div id="r1" class="recipe-article" style="display:none">
+            <span class="tag">Pastry & Cakes</span>
+            <h2>Classic Red Velvet Cake</h2>
+            <p><em>Chef Nat's go-to celebration cake. Dense, moist layers with a tangy cream cheese frosting.</em></p>
+            <img src="images/bake1.jpg" alt="Red Velvet Cake" class="recipe-hero" />
+            <div class="recipe-stats">
+              <div class="stat"><span class="stat-label">Prep</span><span class="stat-value">20 min</span></div>
+              <div class="stat"><span class="stat-label">Bake</span><span class="stat-value">30–35 min</span></div>
+              <div class="stat"><span class="stat-label">Total</span><span class="stat-value">~1 hr 20 min</span></div>
+              <div class="stat"><span class="stat-label">Serves</span><span class="stat-value">10–12</span></div>
+              <div class="stat"><span class="stat-label">Difficulty</span><span class="stat-value">Medium</span></div>
+            </div>
+
+            <h3>Ingredients</h3>
+            <ul class="ingredients-list">
+              <li>2½ cups (315g) cake flour</li>
+              <li>1½ cups (300g) caster sugar</li>
+              <li>1 tsp baking soda</li>
+              <li>1 tsp salt</li>
+              <li>2 tsp cocoa powder</li>
+              <li>2 large eggs</li>
+              <li>1½ cups (360ml) buttermilk</li>
+              <li>1 cup (240ml) vegetable oil</li>
+              <li>2 tbsp red food colouring</li>
+              <li>1 tsp vanilla extract</li>
+              <li>1 tsp white vinegar</li>
+            </ul>
+            <h4>Cream Cheese Frosting</h4>
+            <ul class="ingredients-list">
+              <li>250g full-fat cream cheese, room temperature</li>
+              <li>½ cup (115g) unsalted butter, room temperature</li>
+              <li>3 cups (360g) icing sugar, sifted</li>
+              <li>1 tsp vanilla extract</li>
+            </ul>
+
+            <h3>Method</h3>
+            <ol class="steps-list">
+              <li>Preheat your oven to 175°C. Grease and line two 23cm round cake tins.</li>
+              <li>In a large bowl, sift together the flour, sugar, baking soda, salt and cocoa powder.</li>
+              <li>In a separate bowl, whisk together the eggs, buttermilk, oil, food colouring, vanilla and vinegar until well combined.</li>
+              <li>Pour the wet ingredients into the dry ingredients and fold gently until just combined — do not overmix.</li>
+              <li>Divide the batter evenly between the two tins. Bake for 30–35 minutes or until a skewer inserted in the centre comes out clean.</li>
+              <li>Leave the cakes to cool in the tins for 10 minutes, then turn out onto a wire rack and cool completely before frosting.</li>
+              <li>For the frosting: beat cream cheese and butter together until smooth and fluffy. Add icing sugar gradually, then vanilla. Beat until light and creamy.</li>
+              <li>Sandwich the two layers with frosting, then coat the top and sides. Crumble any offcuts on top as decoration if desired.</li>
+            </ol>
+
+            <h3>Chef Nat's Tips</h3>
+            <ul>
+              <li>Room-temperature ingredients make a noticeably smoother batter — don't skip this.</li>
+              <li>Gel food colouring gives a deeper red than liquid without affecting the batter consistency.</li>
+              <li>Chill the frosted cake for 30 minutes before serving for cleaner slices.</li>
+            </ul>
+
+            <br />
+            <a href="https://wa.me/27727416782?text=Hi%20Chef%20Nat,%20I%20would%20like%20to%20order%20a%20Red%20Velvet%20Cake." class="button primary">Order This Cake from Chef Nat</a>
+          </div>
+
+          <!-- RECIPE R2: Loaded Kota -->
+          <div id="r2" class="recipe-article" style="display:none">
+            <span class="tag">Street Food</span>
+            <h2>Loaded Kota</h2>
+            <p><em>A Soweto classic with attitude. The kota is everything — you make it your own.</em></p>
+            <img src="images/bj1.jpg" alt="Loaded Kota" class="recipe-hero" />
+            <div class="recipe-stats">
+              <div class="stat"><span class="stat-label">Prep</span><span class="stat-value">10 min</span></div>
+              <div class="stat"><span class="stat-label">Cook</span><span class="stat-value">20 min</span></div>
+              <div class="stat"><span class="stat-label">Total</span><span class="stat-value">30 min</span></div>
+              <div class="stat"><span class="stat-label">Serves</span><span class="stat-value">1–2</span></div>
+              <div class="stat"><span class="stat-label">Difficulty</span><span class="stat-value">Easy</span></div>
+            </div>
+
+            <h3>Ingredients</h3>
+            <ul class="ingredients-list">
+              <li>1 large white bread loaf (quarter cut — the kota)</li>
+              <li>2 beef or chicken polony slices</li>
+              <li>2 Russians (smoked sausage), sliced and pan-fried</li>
+              <li>1 egg, fried to your liking</li>
+              <li>Handful of slap chips (thick-cut chips)</li>
+              <li>2 tbsp Atchar (pickled mango or mixed)</li>
+              <li>1 tbsp tomato sauce</li>
+              <li>1 tbsp mayonnaise</li>
+              <li>2–3 slices of cheese (processed or cheddar)</li>
+              <li>Salt & pepper to taste</li>
+            </ul>
+
+            <h3>Method</h3>
+            <ol class="steps-list">
+              <li>Cut the quarter loaf diagonally, hollowing out a portion of the bread inside to make room for the fillings.</li>
+              <li>Spread the inside with mayonnaise and tomato sauce.</li>
+              <li>Layer in the polony, followed by the cheese slices.</li>
+              <li>Add the pan-fried Russians on top.</li>
+              <li>Pile in the slap chips generously — this is non-negotiable.</li>
+              <li>Place the fried egg on top of the chips.</li>
+              <li>Finish with a spoon of atchar for heat and tang. Adjust to your spice preference.</li>
+              <li>Press the bread closed gently, wrap in a sheet of paper and serve immediately.</li>
+            </ol>
+
+            <h3>Chef Nat's Tips</h3>
+            <ul>
+              <li>The atchar is what makes or breaks a kota — don't skip it or be shy with it.</li>
+              <li>Want more heat? Add a spoon of peri-peri or a chilli sauce of your choice.</li>
+              <li>The chips must go in hot. A cold kota is a sad kota.</li>
+            </ul>
+
+            <br />
+            <a href="https://wa.me/27727416782?text=Hi%20Chef%20Nat,%20I%20would%20like%20to%20order%20from%20The%20Bite%20Joint." class="button primary">Order from The Bite Joint</a>
+          </div>
+
+          <!-- ADD MORE RECIPE DETAIL BLOCKS HERE — copy either block above, change the id to r3, r4 etc. -->
+
+        </div>
+
+      </div>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="inner">
+      <ul class="icons">
+        <li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
+        <li><a href="https://wa.me/27727416782" class="icon brands alt fa-whatsapp"><span class="label">WhatsApp</span></a></li>
+      </ul>
+      <ul class="copyright">
+        <li>&copy; Chef Nat's Culinary Services</li>
+        <li>Recipes</li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/jquery.scrolly.min.js"></script>
+  <script src="assets/js/jquery.scrollex.min.js"></script>
+  <script src="assets/js/browser.min.js"></script>
+  <script src="assets/js/breakpoints.min.js"></script>
+  <script src="assets/js/util.js"></script>
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    function showRecipe(id) {
+      // Hide the list
+      document.getElementById('recipe-list-view').classList.add('hidden');
+      // Show the detail view
+      var detail = document.getElementById('recipe-detail-view');
+      detail.classList.add('active');
+      // Hide all recipe articles, show the one selected
+      document.querySelectorAll('.recipe-article').forEach(function(el) {
+        el.style.display = 'none';
+      });
+      document.getElementById(id).style.display = 'block';
+      // Scroll to top of content
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showList() {
+      document.getElementById('recipe-list-view').classList.remove('hidden');
+      var detail = document.getElementById('recipe-detail-view');
+      detail.classList.remove('active');
+      document.querySelectorAll('.recipe-article').forEach(function(el) {
+        el.style.display = 'none';
+      });
+    }
+  </script>
+
+</body>
+</html>
